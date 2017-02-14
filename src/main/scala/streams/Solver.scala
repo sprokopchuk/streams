@@ -74,9 +74,8 @@ trait Solver extends GameDef {
     else {
       val more = for {
         (block, moves) <- initial
-        neighbor <- block.legalNeighbors
-        if !(explored contains neighbor._1)
-      } yield (neighbor._1, neighbor._2 :: moves)
+        neighbor <- newNeighborsOnly(neighborsWithHistory(block, moves), explored)
+      } yield neighbor
       initial ++ from(more, explored ++ (more.map(_._1)))
     }
   }
